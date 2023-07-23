@@ -1,19 +1,19 @@
-[logo]: https://github.com/tasox/deMailer_banner.png "Logo Title Text 2"
+[logo]: logo.png "deMailer"
 
 # Description
 
-> deMailer is a python3 tool that breaks down an email message into components and extracts useful information that can be used for collecting intelligence.
+> deMailer is a python3 tool that breaks-down an email message into components and extracts useful indicators that can be used for collecting intelligence to support a decision.
 
 ## What deMailer is NOT
 
-> At this point, I would like to highlight what is not in the scope of this tool. deMailer is not going to flag any of your emails as malicious nor providing you with results such as: likelyhood or probalities. It will extract attachments but no further actions will be taken. That means, if you have to use different tools to investigate and analyze the extracted attachments. To assess objectively the output of the tool as well as dinstinguise the expected from the unexpected, operators must have a basic understanding of email headers.
+> At this point, I would like to highlight what is not in the scope of this tool. First and most importantly, deMailer isn't a replacement of any other email analysis & reporting tool that you currently and was never created with that in mind. Consider this as another one tool that could help you against the fight with phishing emails.deMailer is not going to flag any of your emails as malicious nor providing you with results such as: likelyhood or probalities. It will extract attachments but no further actions will be taken. That means, users have to use different tools to investigate and analyze the extracted attachments. To assess objectively the output of the tool as well as dinstinguise the expected from the unexpected, analysts must have a basic understanding of email headers.
 
 ## Setup environment
 
 deMailer can run eiher by cloning this repo and installing its dependencies with ```requirements.txt``` or pulling deMailer's docker image from DockerHub (https://hub.docker.com/_/demailer). Both options will be covered in this documentation:
 
-- [Docker setup](#Docker_setup)
-- [Manual setup](#Manual_setup) 
+- [Docker setup](#docker-setup)
+- [Manual setup](#manual-setup) 
 
 ### Docker setup
 
@@ -63,11 +63,12 @@ python3 deMailer.py -h
 ## Usage
 > The help output was grouped into six categories: ```VirusTotal```, ```Yara```, ```Display modes```, ```Output```, ```Exclude from scanning``` which I'm going to describe later and provide some examples. By default, deMailer, is not procceeding with further scanning when ```private IPs``` are identified - it will extract them, however is not going to use them for information collection.
 
-- VirusTotal
-- Yara
-- Display modes
-- Output
-- Exclude from scanning
+- [Virus Total](#virus-total)
+- [Yara](#Yara)
+- [Display modes](#display-modes)
+- [Output](#manual-checks)
+- [Exclude from scanning](#exclude-from-scanning)
+- [Manual checks](#manual-checks)
 
 
 ```
@@ -207,3 +208,51 @@ python3 deMailer.py -f <*.eml/*.msg> --table_format jira
 
 ## Exclude from scanning
 
+> You know your environment better than anyone else and you can take further control over scanning by excluding IPs, Domains or Email addresses you believe are clean and their behavior is expected. The excluded atomics are visible in ```IsWhitelisted```column within some tables and have the boolean value ```true```. These atomics are excluded from any type of request as well as from VT scans.
+
+**Note:** In current version, deMailer is not collecting information about email addresses but in the futured version this functionality will be added. For this reason ```--exclude_emails``` flag is important.
+
+### Excluding IP(s)
+
+```
+python3 deMailer.py -f <*.eml/*.msg> --exclude_ips 93.25.36.147,97.48.69.11
+python3 deMailer.py -f <*.eml/*.msg> --exclude_ips 93.25.36.1/24
+```
+
+**Results**
+
+```
+...
+╒═══════════════╤════════════════════════════════╤═════════╤═══════════╤════════════════════════════╤═════════════╤═════════════════╕
+│ IP Address    │ DnsRecord                      │ Ccode   │ Country   │ Location                   │ IsPrivate   │ IsWhitelisted   │
+╞═══════════════╪════════════════════════════════╪═════════╪═══════════╪════════════════════════════╪═════════════╪═════════════════╡
+│ 93.25.36.147  │ -                              │ -       │ -         │ -,-                        │ False       │ True            │
+├───────────────┼────────────────────────────────┼─────────┼───────────┼────────────────────────────┼─────────────┼─────────────────┤
+├───────────────┼────────────────────────────────┼─────────┼───────────┼────────────────────────────┼─────────────┼─────────────────┤
+│ 97.48.69.11   │ -                              │ -       │ -         │ -,-                        │ False       │ True            │
+...
+```
+
+### Excluding Domain(s)
+
+```
+python3 deMailer.py -f <*.eml/*.msg> --exclude_domains gmail.com,microsoft.com
+python3 deMailer.py -f <*.eml/*.msg> --exclude_domains www.google.com
+```
+
+Use the asterisk when you know are confident that email headers contain multiple subdomains or TLD from known resource:
+```
+python3 deMailer.py -f <*.eml/*.msg> --exclude_domains *google.com
+python3 deMailer.py -f <*.eml/*.msg> --exclude_domains google*
+```
+
+Use the following string matcher for domains that contain multiple subdomains AND TLDs
+
+```
+python3 deMailer.py -f <*.eml/*.msg> --exclude_domains *google*
+```
+---
+
+## Manual checks
+
+> On this component, ```deMailer``` is performing various checks between headers. If value doesn't meet a requirement then the header check is flagged as ```Suspicious``` otherwise ```OK```. A single misconfiguration on the DKIM or SPF header can easily set the related checks as ```Suspicious``` and make you believe this is phishing email. Be mindful when you read the output and use other resources to validate the results. <b>Always look the problem holistically and not rely only to a sibgle header check<b>.
