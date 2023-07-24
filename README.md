@@ -10,21 +10,27 @@
 
 ## Setup environment
 
-deMailer can run eiher by cloning this repo and installing its dependencies with ```requirements.txt``` or pulling deMailer's docker image from DockerHub (https://hub.docker.com/_/demailer). Both options will be covered in this documentation:
+deMailer can run eiher by cloning this repo and installing its dependencies with ```requirements.txt``` or pulling deMailer's docker image from DockerHub (https://hub.docker.com/r/tasox/demailer). Both options will be covered in this documentation:
 
 - [Docker setup](#docker-setup)
 - [Manual setup](#manual-setup) 
 
 ### Docker setup
 
-> To run deMailer successfully as a docker image, you have first to download (pull) it from docker hub repository : ```sudo docker pull tasox/demailer:latest```. deMailer needs access to your local X server in order to print the results to your screen. For this reason, you have to enable ```xhost```[1] for the root user with the command ```xhost +SI:localuser:root```. When you finish your investigation restore the X screen access control to normal with ```xhost -```. After pulling deMailer and adding the ```localuser:root``` to access control list the final step is to run deMailer container in interactive mode:
+> To run deMailer successfully as a docker image, you have first to download (pull) it from my [docker hub repository](https://hub.docker.com/r/tasox/demailer). deMailer needs access to your local X server in order to print the results to your screen. For this reason, you have to enable ```xhost```[1] for the root user with the command ```xhost +SI:localuser:root```. When you finish your investigation restore the X screen access control to normal with ```xhost -```. After pulling deMailer and adding the ```localuser:root``` to access control list the final step is to run deMailer container in interactive mode:
 
-**AMD64 Version:**
+**Download AMD64/ARM64**
+```
+sudo docker run -it -e DISPLAY=$DISPLAY --network=host -v /tmp/.X11-unix:/tmp/.X11-unix tasox/demailer:linux-amd64-latest
+sudo docker run -it -e DISPLAY=$DISPLAY --network=host -v /tmp/.X11-unix:/tmp/.X11-unix tasox/demailer:linux-arm-latest
+```
+
+**Execution AMD64 Version:**
 ```
 sudo docker run -it -e DISPLAY=$DISPLAY --network=host -v /tmp/.X11-unix:/tmp/.X11-unix tasox/demailer:linux-amd64-latest
 ```
 
-**ARM Version:**
+**Execution ARM64 Version:**
 ```
 sudo docker run -it -e DISPLAY=$DISPLAY --network=host -v /tmp/.X11-unix:/tmp/.X11-unix tasox/demailer:linux-arm-latest
 ```
