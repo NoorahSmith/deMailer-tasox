@@ -1,4 +1,4 @@
-[logo]: logo.png "deMailer"
+![logo](logo.png)
 
 # Description
 
@@ -19,8 +19,14 @@ deMailer can run eiher by cloning this repo and installing its dependencies with
 
 > To run deMailer successfully as a docker image, you have first to download (pull) it from docker hub repository : ```sudo docker pull tasox/demailer:latest```. deMailer needs access to your local X server in order to print the results to your screen. For this reason, you have to enable ```xhost```[1] for the root user with the command ```xhost +SI:localuser:root```. When you finish your investigation restore the X screen access control to normal with ```xhost -```. After pulling deMailer and adding the ```localuser:root``` to access control list the final step is to run deMailer container in interactive mode:
 
+**AMD64 Version:**
 ```
-sudo docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix tasox/demailer:latest
+sudo docker run -it -e DISPLAY=$DISPLAY --network=host -v /tmp/.X11-unix:/tmp/.X11-unix tasox/demailer:linux-amd64-latest
+```
+
+**ARM Version:**
+```
+sudo docker run -it -e DISPLAY=$DISPLAY --network=host -v /tmp/.X11-unix:/tmp/.X11-unix tasox/demailer:linux-arm-latest
 ```
 
 **Note:** If you use this option, you'll not need to install anything in your host.
@@ -29,7 +35,7 @@ Now, you're inside deMailer's docker image which also includes one malicious ema
 
 ```
 ┌──(parallels㉿kali-linux-2021-3)-[~]
-└─$ sudo docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix tasox/demailer:latest
+└─$ sudo docker run -it -e DISPLAY=$DISPLAY --network=host -v /tmp/.X11-unix:/tmp/.X11-unix tasox/demailer:latest
 
 root@2aab7c356136:/home/deMailer# python3 deMailer.py -f email_samples/2023-03-17-Emotet-E5-malspam-1644-UTC.eml
 ```
@@ -41,7 +47,7 @@ This setup option requires the installation of various dependenicies but first i
 
 ```
 pip install pandas==1.5.3
-
+apt-get install python3-tk
 ```
 
 Then install all the other requirements with:
@@ -61,14 +67,14 @@ python3 deMailer.py -h
 ---
 
 ## Usage
-> The help output was grouped into six categories: ```VirusTotal```, ```Yara```, ```Display modes```, ```Output```, ```Exclude from scanning``` which I'm going to describe later and provide some examples. By default, deMailer, is not procceeding with further scanning when ```private IPs``` are identified - it will extract them, however is not going to use them for information collection.
+> The help output was grouped into six categories: ```VirusTotal```, ```Yara```, ```Display modes```, ```Output```, ```Exclude from scanning``` which I'm going to describe later and provide some examples. By default, deMailer, is not procceeding with further scanning when ```private IPs``` are identified - it will extract them, however is not going to use them for information collection. 
 
 - [Virus Total](#virus-total)
 - [Yara](#Yara)
 - [Display modes](#display-modes)
 - [Output](#manual-checks)
 - [Exclude from scanning](#exclude-from-scanning)
-- [Manual checks](#manual-checks)
+
 
 
 ```
@@ -208,7 +214,7 @@ python3 deMailer.py -f <*.eml/*.msg> --table_format jira
 
 ## Exclude from scanning
 
-> You know your environment better than anyone else and you can take further control over scanning by excluding IPs, Domains or Email addresses you believe are clean and their behavior is expected. The excluded atomics are visible in ```IsWhitelisted```column within some tables and have the boolean value ```true```. These atomics are excluded from any type of request as well as from VT scans.
+> You know your environment better than anyone else and you can take further control over scanning by excluding IPs, Domains or Email addresses you believe are clean and their behavior is expected. The excluded atomics are visible in ```IsWhitelisted``` column within some tables and have the boolean value ```true```. These atomics are excluded from any type of request as well as from VT scans.
 
 **Note:** In current version, deMailer is not collecting information about email addresses but in the futured version this functionality will be added. For this reason ```--exclude_emails``` flag is important.
 
@@ -256,3 +262,29 @@ python3 deMailer.py -f <*.eml/*.msg> --exclude_domains *google*
 ## Manual checks
 
 > On this component, ```deMailer``` is performing various checks between headers. If value doesn't meet a requirement then the header check is flagged as ```Suspicious``` otherwise ```OK```. A single misconfiguration on the DKIM or SPF header can easily set the related checks as ```Suspicious``` and make you believe this is phishing email. Be mindful when you read the output and use other resources to validate the results. <b>Always look the problem holistically and not rely only to a sibgle header check<b>.
+
+**Note:** Always pay extra attention to DKIM, SPF and DMARC checks
+
+---
+
+## Reporting
+Finally, you will receive a report in ```html``` format, which has a similar output with what you get on your screen. The report will be saved under ```/html_report/```. The attachments (if exists) will be extracted and saved under ```/attachments/``` folder. deMailer will strip the tags from the email ```body``` without text content or without properties and will save it the results with a ```.txt``` extension under ```/BODY2TXT/``` folder. This can enable you to distinct the most suspicious tags.
+
+```
+[+] Email attachments saved under: ['/home/deMailer/attachments/Message 167168370508.one']
+[+] Email body converted to text and saved under: /home/deMailer/BODY2TXT/body2txt_stripped.txt
+[+] Output saved to HTML file: /home/deMailer/html_report/2023-03-17-Emotet-E5-malspam-1644-UTC_report.html
+
+```
+
+--- 
+
+## Credits
+
+The core of the deMailer is based on countless public phishing reports and . However, I would like to thank [malware-traffic-analysis](https://www.malware-traffic-analysis.net) for its malspam collection, which I relied on during the developing process. [JoshData](https://github.com/JoshData) for the amazing work that has done on the ```msg``` [converter](https://github.com/JoshData/convert-outlook-msg-file), which deMailer uses for converting ```msg``` to ```eml```. **A massive thank you to the ```Stackoverflow``` community.**
+
+---
+
+### References:
+
+[1] https://wiki.archlinux.org/title/Xhost
