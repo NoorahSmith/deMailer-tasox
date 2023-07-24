@@ -5,10 +5,10 @@ import colors
 
 _deMailerDeviator = {
                                 
-                        "domainNameWhitelisting":['gmail.com'],
-                        "emailWhitelisting":['','-',None,'tasos1@gmail.com'],
-                        "ipAddressWhitelisting":["127.0.0.1","127.0.1.1","23.83.212.50"],
-                        "UrlWhitelisting":[],
+                        "domainNameWhitelisting":['','-',None],
+                        "emailWhitelisting":['','-',None],
+                        "ipAddressWhitelisting":["127.0.0.1","127.0.1.1"],
+                        "UrlWhitelisting":['','-',None],
                     }
 
 class deMailerDeviator:
