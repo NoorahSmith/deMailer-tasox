@@ -287,7 +287,7 @@ Finally, you will receive a report in ```html``` format, which has a similar out
 
 ## Credits
 
-The core of the deMailer is based on countless public phishing reports and . However, I would like to thank [malware-traffic-analysis](https://www.malware-traffic-analysis.net) for its malspam collection, which I relied on during the developing process. [JoshData](https://github.com/JoshData) for the amazing work that has done on the ```msg``` [converter](https://github.com/JoshData/convert-outlook-msg-file), which deMailer uses for converting ```msg``` to ```eml```. **A massive thank you to the ```Stackoverflow``` community.**
+The core of the deMailer is based on countless public phishing reports and . However, I would like to thank [malware-traffic-analysis](https://www.malware-traffic-analysis.net) for its malspam collection, which I relied on during the developing process. [JoshData](https://github.com/JoshData) for the amazing work that has done on the ```msg``` [converter](https://github.com/JoshData/convert-outlook-msg-file), which deMailer uses for converting ```msg``` to ```eml```. **A massive thank you to the best dev community - ```StackOverFlow```**
 
 ---
 
