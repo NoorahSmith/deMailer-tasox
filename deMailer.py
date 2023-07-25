@@ -76,11 +76,11 @@ class deMailerCore:
 
         emailFullFilePathToLower = deMailerMiscConverter(file).strToLowerCase()
 
-        if emailFullFilePathToLower.endswith(".msg"):
+        if file.endswith(".msg"):
             
             try:
                 # Convert MSG -> EML and return the path of the EML
-                email = deMailerMsg2EmlConverter().convertMSGtoEMLv2(emailFullFilePathToLower)
+                email = deMailerMsg2EmlConverter().convertMSGtoEMLv2(file)
                 print(f"{self.colors.GREEN}[+] MSG converted to EML succcessfully{self.colors.RESET}")
             except Exception as e:
                 raise Exception(f"{self.colors.RED}[[-] Failed to convert the MSG to EML{self.colors.RESET}")
@@ -115,7 +115,7 @@ class deMailerCore:
                     self.updater.updateEmailEnvelopFrom(envelopFrom,self._deMailerZeus)
 
                 # Extract e-mail from header.from
-                envelopFrom = self.extractor.extractEmailHeaderFrom(headerValue)
+                headerFrom = self.extractor.extractEmailHeaderFrom(headerValue)
                 # Update '_deMailerZeus' dict
                 if not headerFrom or headerFrom == '' or headerFrom == None:
                     self.updater.updateEmailHeaderFrom(self.NotExist,self._deMailerZeus)
