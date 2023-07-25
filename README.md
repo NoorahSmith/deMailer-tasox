@@ -6,7 +6,7 @@
 
 ## What deMailer is NOT
 
-> At this point, I would like to highlight what is not in the scope of this tool. First and most importantly, deMailer isn't a replacement of any other email analysis & reporting tool that you currently and was never created with that in mind. Consider this as another one tool that could help you against the fight with phishing emails.deMailer is not going to flag any of your emails as malicious nor providing you with results such as: likelyhood or probalities. It will extract attachments but no further actions will be taken. That means, users have to use different tools to investigate and analyze the extracted attachments. To assess objectively the output of the tool as well as dinstinguise the expected from the unexpected, analysts must have a basic understanding of email headers.
+> At this point, I would like to highlight what is not in the scope of this tool. First and most importantly, deMailer isn't a replacement of any other email analysis & reporting tool that you currently have in your disposal and was never created with that in mind. Consider this as another one tool that could help you against the fight with phishing emails. It will extract attachments but no further actions will be taken. That means, users have to use different tools to investigate and analyze the extracted attachments. To assess objectively the output of the tool as well as dinstinguise the expected from the unexpected, analysts must have a basic understanding of email headers.
 
 ## Setup environment
 
@@ -272,12 +272,14 @@ python3 deMailer.py -f <*.eml/*.msg> --exclude_domains *google*
 
 > On this component, ```deMailer``` is performing various checks between headers. If value doesn't meet a requirement then the header check is flagged as ```Suspicious``` otherwise ```OK```. A single misconfiguration on the DKIM or SPF header can easily set the related checks as ```Suspicious``` and make you believe this is phishing email. Be mindful when you read the output and use other resources to validate the results. <b>Always look the problem holistically and not rely only to a sibgle header check<b>.
 
-**Note:** Always pay extra attention to DKIM, SPF and DMARC checks
+**Note**: Always pay extra attention to DKIM, SPF and DMARC checks
 
 ---
 
 ## Reporting
-Finally, you will receive a report in ```html``` format, which has a similar output with what you get on your screen. The report will be saved under ```/html_report/```. The attachments (if exists) will be extracted and saved under ```/attachments/``` folder. deMailer will strip the tags from the email ```body``` without text content or without properties and will save it the results with a ```.txt``` extension under ```/BODY2TXT/``` folder. This can enable you to distinct the most suspicious tags.
+
+> Finally, you will receive a report in ```html``` format, which has a similar output with what you get on your screen. The report will be saved under ```/html_report/```. The attachments (if exists) will be extracted and saved under ```/attachments/``` folder. deMailer will strip the tags from the email ```body``` without text content or without properties and will save it the results with a ```.txt``` extension under ```/BODY2TXT/``` folder. This can enable you to distinct the most suspicious tags.
+
 
 ```
 [+] Email attachments saved under: ['/home/deMailer/attachments/Message 167168370508.one']
@@ -290,7 +292,7 @@ Finally, you will receive a report in ```html``` format, which has a similar out
 
 ## Credits
 
-The core of the deMailer is based on countless public phishing reports and . However, I would like to thank [malware-traffic-analysis](https://www.malware-traffic-analysis.net) for its malspam collection, which I relied on during the developing process. [JoshData](https://github.com/JoshData) for the amazing work that has done on the ```msg``` [converter](https://github.com/JoshData/convert-outlook-msg-file), which deMailer uses for converting ```msg``` to ```eml```. **A massive thank you to the best dev community - ```StackOverFlow```**
+> The core of the deMailer is based on countless public phishing reports and . However, I would like to thank [malware-traffic-analysis](https://www.malware-traffic-analysis.net) for its malspam collection, which I relied on during the developing process. [JoshData](https://github.com/JoshData) for the amazing work that has done on the ```msg``` [converter](https://github.com/JoshData/convert-outlook-msg-file), which deMailer uses for converting ```msg``` to ```eml```. **A massive thank you to the best dev community - ```StackOverFlow```**
 
 ---
 
