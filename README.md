@@ -159,12 +159,15 @@ https://www.virustotal.com/api/v3/domains/{domain}/referrer_files | The referrer
 ```
 python3 deMailer.py -f <*.eml/*.msg> -vtapi <API>
 ```
+![VirusTotal basic scan](images/vt_basic_scan.png)
 
 ### Extensive scan
 
 ```
 python3 deMailer.py -f <*.eml/*.msg> -vtapi <API> -X
 ```
+
+![VirusTotal extensive scan](images/vt_extensive_scan.png)
 
 ---
 
