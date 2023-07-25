@@ -21,8 +21,8 @@ deMailer can run eiher by cloning this repo and installing its dependencies with
 
 **Download AMD64/ARM64**
 ```
-sudo docker run -it -e DISPLAY=$DISPLAY --network=host -v /tmp/.X11-unix:/tmp/.X11-unix tasox/demailer:linux-amd64-latest
-sudo docker run -it -e DISPLAY=$DISPLAY --network=host -v /tmp/.X11-unix:/tmp/.X11-unix tasox/demailer:linux-arm-latest
+sudo docker pull tasox/demailer:linux-amd64-latest	
+sudo docker pull tasox/demailer:linux-arm-latest
 ```
 
 **Execution AMD64 Version:**
